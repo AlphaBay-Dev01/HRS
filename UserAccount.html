@@ -6,15 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - HRS Admin</title>
-    <link rel="stylesheet" href="style.css">
+    <title>HRS-GP</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" crossorigin="anonymous">
 
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="styles.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-
+    <link rel="stylesheet" href="style.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
         .pagination {
@@ -45,7 +42,7 @@
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" href="index.html">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -92,7 +89,7 @@
                         </a>
                         <div class="collapse" id="collapseMoreOptions" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="#!"><div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Employee</a>
+                                <a class="nav-link" href="Employee.html"><div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Employee</a>
                                 <a class="nav-link" href="#!"><div class="sb-nav-link-icon"><i class="fas fa-th-list"></i> </div>Structure</a>
                                 <a class="nav-link" href="#!"><div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>Report</a>
                             </nav>
@@ -420,6 +417,9 @@
                         users = users.filter(user => user.email !== email); // Remove user by email
                         localStorage.setItem('users', JSON.stringify(users)); // Save back to local storage
                     }
+                //store data base on firebase
+                
+               
                 </script>
     
                 <!-- Bootstrap Modal for Adding Data -->
@@ -521,7 +521,6 @@
                         </div>
                     </div>
                 </div>
-    
                 <!-- Bootstrap Modal for Viewing Data -->
                 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -548,7 +547,7 @@
     
                 <!-- Bootstrap Modal for Viewing Profile Image -->
                 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="imageModalLabel">Profile Image</h5>
@@ -589,8 +588,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="chart-area-demo.js"></script>
     <script src="chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="datatables-simple-demo.js"></script>
- 
+    <script src="chart-pie-demo.js"></script>
 </body>
 </html>

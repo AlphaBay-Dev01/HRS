@@ -7,8 +7,12 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>HRS-GP</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" crossorigin="anonymous">
-
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css">
@@ -42,7 +46,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="home.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
@@ -51,7 +55,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Inbox
                         </a>
-                        <a class="nav-link" href="../calendar-03/index.html">
+                        <a class="nav-link" href=" ">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Calendar & Todos
                         </a>
@@ -69,7 +73,6 @@
                                 <a class="nav-link" href=" "><div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i> </div>Career Sites</a>
                             </nav>
                         </div>
-                        
                         <!-- <div class="sb-sidenav-menu-heading">More Options</div> -->
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMoreOptions" aria-expanded="false" aria-controls="collapseMoreOptions">
                             <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
@@ -78,7 +81,7 @@
                         </a>
                         <div class="collapse" id="collapseMoreOptions" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="#!"><div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Employee</a>
+                                <a class="nav-link" href="Employee.html"><div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div> Employee</a>
                                 <a class="nav-link" href="#!"><div class="sb-nav-link-icon"><i class="fas fa-th-list"></i> </div>Structure</a>
                                 <a class="nav-link" href="#!"><div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>Report</a>
                             </nav>
@@ -234,422 +237,471 @@
                         </div>
                     </div> -->
                     <main id="mainContain" style="padding: 10px;">
-                        <!-- Reload Data Button -->
-                        <!-- <button class="btn btn-info mb-3" onclick="reloadData()">Reload Data</button> -->
-            
-                        <!-- Add Data Button -->
-                        <!-- <button class="btn btn-success mb-3" onclick="showAddModal()">Add User</button> -->
-            
-                        <!-- Table structure -->
-                        <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Status</th>
-                                    <th>Role</th>
-                                    <th>Position</th>
-                                    <th>Company</th>
-                                    <th>Profile</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Dynamic data will be populated here -->
-                            </tbody>
-                        </table>
-            
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-                        <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-            
-                        <script>
-                            let table;
-            
-                            $(document).ready(function () {
-                                table = $('#example').DataTable({
-                                    paging: true,
-                                    searching: true,
-                                    pageLength: 10,
-                                    responsive: true,
-                                });
-            
-                                loadDataFromLocalStorage();
-            
-                                window.showAddModal = function () {
-                                    $('#addModal').modal('show');
-                                };
-            
-                                window.reloadData = function () {
-                                    table.clear().draw(); // Clear existing data
-                                    loadDataFromLocalStorage(); // Reload from local storage
-                                    Swal.fire('Reloaded!', 'User data has been reloaded.', 'success');
-                                };
-            
-                                window.addData = function () {
-                                    const name = $('#addName').val();
-                                    const email = $('#addEmail').val();
-                                    const phone = $('#addPhone').val();
-                                    const status = $('#addStatus').val();
-                                    const role = $('#addRole').val();
-                                    const position = $('#addPosition').val();
-                                    const company = $('#addCompany').val();
-                                    const profileImage = $('#addImage')[0].files[0];
-                                    const reader = new FileReader();
-            
-                                    reader.onload = function (e) {
-                                        const rowData = {
-                                            name,
-                                            email,
-                                            phone,
-                                            status,
-                                            role,
-                                            position,
-                                            company,
-                                            profileImage: e.target.result,
-                                        };
-            
-                                        // Use SweetAlert for confirmation
-                                        Swal.fire({
-                                            title: 'Are you sure?',
-                                            text: "You are about to add this user.",
-                                            icon: 'warning',
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#3085d6',
-                                            cancelButtonColor: '#d33',
-                                            confirmButtonText: 'Yes, add it!'
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                const dataRow = [
-                                                    rowData.name,
-                                                    rowData.email,
-                                                    rowData.phone,
-                                                    rowData.status,
-                                                    rowData.role,
-                                                    rowData.position,
-                                                    rowData.company,
-                                                    `<a href="#" onclick="viewProfileImage('${rowData.profileImage}')">View Profile</a>`,
-                                                    `<button class="btn btn-primary btn-sm" onclick="editData('${rowData.email}')">Edit</button>
-                                                    <button class="btn btn-danger btn-sm" onclick="deleteData('${rowData.email}')">Delete</button>
-                                                    <button class="btn btn-info btn-sm" onclick="viewData('${rowData.email}')">View</button>`,
-                                                ];
-            
-                                                table.row.add(dataRow).draw(false);
-                                                storeDataInLocalStorage(rowData);
-                                                $('#addForm')[0].reset();
-                                                $('#addModal').modal('hide'); // Close modal here
-                                                Swal.fire('Added!', 'User information has been added.', 'success');
-                                            }
-                                        });
-                                    };
-            
-                                    if (profileImage) {
-                                        reader.readAsDataURL(profileImage);
-                                    } else {
-                                        Swal.fire('Error', 'Please select an image.', 'error');
-                                    }
-                                };
-            
-                                window.editData = function (email) {
-                                    const row = table.row(function (idx, data, node) {
-                                        return $(node).find('td:eq(1)').text() === email; // Change to email-based selection
-                                    });
-            
-                                    let dataRow = row.data();
-                                    $('#editName').val(dataRow[0]);
-                                    $('#editEmail').val(dataRow[1]);
-                                    $('#editPhone').val(dataRow[2]);
-                                    $('#editStatus').val(dataRow[3]);
-                                    $('#editRole').val(dataRow[4]);
-                                    $('#editPosition').val(dataRow[5]);
-                                    $('#editCompany').val(dataRow[6]);
-            
-                                    $('#editModal').data('row', row);
-                                    $('#editModal').modal('show');
-                                };
-            
-                                window.updateData = function () {
-                                    const updatedName = $('#editName').val();
-                                    const updatedEmail = $('#editEmail').val();
-                                    const updatedPhone = $('#editPhone').val();
-                                    const updatedStatus = $('#editStatus').val();
-                                    const updatedRole = $('#editRole').val();
-                                    const updatedPosition = $('#editPosition').val();
-                                    const updatedCompany = $('#editCompany').val();
-            
-                                    const row = $('#editModal').data('row');
-            
-                                    Swal.fire({
-                                        title: 'Are you sure?',
-                                        text: "You are about to update this user's information.",
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#3085d6',
-                                        cancelButtonColor: '#d33',
-                                        confirmButtonText: 'Yes, update it!'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            const updatedDataRow = [
-                                                updatedName,
-                                                updatedEmail,
-                                                updatedPhone,
-                                                updatedStatus,
-                                                updatedRole,
-                                                updatedPosition,
-                                                updatedCompany,
-                                                row.data()[7], // Keep existing profile link/button
-                                                row.data()[8]  // Keep existing actions
-                                            ];
-            
-                                            row.data(updatedDataRow).draw(false);
-            
-                                            // Update local storage
-                                            updateLocalStorage({
-                                                name: updatedName,
-                                                email: updatedEmail,
-                                                phone: updatedPhone,
-                                                status: updatedStatus,
-                                                role: updatedRole,
-                                                position: updatedPosition,
-                                                company: updatedCompany,
-                                                profileImage: row.data()[7].match(/src="([^"]+)"/)[1] // Keep existing image
-                                            });
-            
-                                            $('#editModal').modal('hide'); // Close modal here
-                                            $('#editForm')[0].reset();
-                                            Swal.fire('Updated!', 'User information has been updated.', 'success');
-                                        }
-                                    });
-                                };
-            
-                                window.deleteData = function (email) {
-                                    Swal.fire({
-                                        title: 'Are you sure?',
-                                        text: "You are about to delete this user.",
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#d33',
-                                        cancelButtonColor: '#3085d6',
-                                        confirmButtonText: 'Yes, delete it!'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            table.row(function (idx, data, node) {
-                                                return $(node).find('td:eq(1)').text() === email; // Change to email-based matching
-                                            }).remove().draw(false);
-                                            removeFromLocalStorage(email);
-                                            Swal.fire('Deleted!', 'User has been deleted.', 'success');
-                                        }
-                                    });
-                                };
-            
-                                window.viewData = function (email) {
-                                    const row = $('#example tbody tr').filter(function () {
-                                        return $(this).find('td:eq(1)').text() === email; // Change to email-based matching
-                                    });
-            
-                                    const cells = row.find('td');
-                                    $('#viewName').text(cells[0].innerText);
-                                    $('#viewEmail').text(cells[1].innerText);
-                                    $('#viewPhone').text(cells[2].innerText);
-                                    $('#viewStatus').text(cells[3].innerText);
-                                    $('#viewRole').text(cells[4].innerText);
-                                    $('#viewPosition').text(cells[5].innerText);
-                                    $('#viewCompany').text(cells[6].innerText);
-            
-                                    $('#viewModal').modal('show');
-                                };
-            
-                                window.viewProfileImage = function (imageSrc) {
-                                    $('#profileImage').attr('src', imageSrc);
-                                    $('#imageModal').modal('show');
-                                };
-                            });
-            
-                            function storeDataInLocalStorage(userData) {
-                                let users = JSON.parse(localStorage.getItem('users')) || [];
-                                users.push(userData);
-                                localStorage.setItem('users', JSON.stringify(users));
-                            }
-            
-                            function loadDataFromLocalStorage() {
-                                let users = JSON.parse(localStorage.getItem('users')) || [];
-                                users.forEach(user => {
-                                    const dataRow = [
-                                        user.name,
-                                        user.email,
-                                        user.phone,
-                                        user.status,
-                                        user.role,
-                                        user.position,
-                                        user.company,
-                                        `<a href="#" onclick="viewProfileImage('${user.profileImage}')">View Profile</a>`,
-                                        `<button class="btn btn-primary btn-sm" onclick="editData('${user.email}')">Edit</button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteData('${user.email}')">Delete</button>
-                                        <button class="btn btn-info btn-sm" onclick="viewData('${user.email}')">View</button>`,
-                                    ];
-                                    table.row.add(dataRow).draw(false);
-                                });
-                            }
-            
-                            function updateLocalStorage(userData) {
-                                let users = JSON.parse(localStorage.getItem('users')) || [];
-                                users = users.map(user => {
-                                    if (user.email === userData.email) {
-                                        return userData; // Replace user data
-                                    }
-                                    return user; // Keep existing user data
-                                });
-                                localStorage.setItem('users', JSON.stringify(users)); // Save back to local storage
-                            }
-            
-                            function removeFromLocalStorage(email) {
-                                let users = JSON.parse(localStorage.getItem('users')) || [];
-                                users = users.filter(user => user.email !== email); // Remove user by email
-                                localStorage.setItem('users', JSON.stringify(users)); // Save back to local storage
-                            }
-                        </script>
-            
-                        <!-- Bootstrap Modal for Adding Data -->
-                        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="addModalLabel">Add User</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="addForm">
-                                            <div class="mb-3">
-                                                <label for="addName" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="addName" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addEmail" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="addEmail" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addPhone" class="form-label">Phone</label>
-                                                <input type="text" class="form-control" id="addPhone" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addStatus" class="form-label">Status</label>
-                                                <input type="text" class="form-control" id="addStatus" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addRole" class="form-label">Role</label>
-                                                <input type="text" class="form-control" id="addRole" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addPosition" class="form-label">Position</label>
-                                                <input type="text" class="form-control" id="addPosition" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addCompany" class="form-label">Company</label>
-                                                <input type="text" class="form-control" id="addCompany" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="addImage" class="form-label">Profile Image</label>
-                                                <input type="file" class="form-control" id="addImage" accept="image/*" required>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="addData()">Add</button>
-                                    </div>
-                                </div>
+                        <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+                            <!-- <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="reloadData()">
+                             Reload Data
+                            </button>
+                            <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="openAddUserModal()">
+                             Add User
+                            </button> -->
+                           </div>
+                           <div class="mb-4 flex flex-col md:flex-row justify-between space-y-2 md:space-y-0 md:space-x-2">
+                            <div class="flex items-center">
+                             <label class="mr-2" for="entries">
+                              Show
+                             </label>
+                             <select class="border rounded p-1" id="entries">
+                              <option value="10">
+                               10
+                              </option>
+                             </select>
+                             <label class="ml-2" for="entries">
+                              entries
+                             </label>
                             </div>
-                        </div>
-            
-                        <!-- Bootstrap Modal for Editing Data -->
-                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="editForm">
-                                            <div class="mb-3">
-                                                <label for="editName" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="editName" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="editEmail" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="editEmail" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="editPhone" class="form-label">Phone</label>
-                                                <input type="text" class="form-control" id="editPhone" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="editStatus" class="form-label">Status</label>
-                                                <input type="text" class="form-control" id="editStatus" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="editRole" class="form-label">Role</label>
-                                                <input type="text" class="form-control" id="editRole" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="editPosition" class="form-label">Position</label>
-                                                <input type="text" class="form-control" id="editPosition" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="editCompany" class="form-label">Company</label>
-                                                <input type="text" class="form-control" id="editCompany" required>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="updateData()">Update</button>
-                                    </div>
-                                </div>
+                            <!-- <div class="flex items-center">
+                             <label class="mr-2" for="search">
+                              Search:
+                             </label>
+                             <input class="border rounded p-1" id="search" onkeyup="searchTable()" type="text"/>
+                            </div> -->
+                           </div>
+                           <div class="overflow-x-auto">
+                            <table class="min-w-full border-collapse border border-gray-200">
+                             <thead>
+                              <tr>
+                               <th class="border border-gray-200 px-4 py-2">
+                                 Employee No
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 Last Name
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 First Name
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 Birthdate
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 Gender
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 Hire Date
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 Religion
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                 Marital Status
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+                                Profile
+                               </th>
+                               <th class="border border-gray-200 px-4 py-2">
+                                Actions
+                               </th>
+                              </tr>
+                             </thead>
+                             <tbody id="userTable">
+                              <!-- User rows will be appended here -->
+                             </tbody>
+                            </table>
+                           </div>
+                           <div class="mt-4">
+                            <p>
+                             Showing
+                             <span id="entryCount">
+                              0
+                             </span>
+                             entries
+                            </p>
+                            <div class="flex space-x-2">
+                             <a class="text-blue-500" href="#">
+                              Previous
+                             </a>
+                             <span>
+                              1
+                             </span>
+                             <a class="text-blue-500" href="#">
+                              Next
+                             </a>
                             </div>
-                        </div>
-            
-                        <!-- Bootstrap Modal for Viewing Data -->
-                        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewModalLabel">User Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><strong>Name:</strong> <span id="viewName"></span></p>
-                                        <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-                                        <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
-                                        <p><strong>Status:</strong> <span id="viewStatus"></span></p>
-                                        <p><strong>Role:</strong> <span id="viewRole"></span></p>
-                                        <p><strong>Position:</strong> <span id="viewPosition"></span></p>
-                                        <p><strong>Company:</strong> <span id="viewCompany"></span></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
+                           </div>
+                           <!-- Add/Edit User Modal -->
+                           <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden" id="addUserModal">
+                            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                             <h2 class="text-xl mb-4" id="modalTitle">
+                              Add User
+                             </h2>
+                             <form id="addUserForm">
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="name">
+                                 Employee No
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="name" type="text"/>
+                              </div>
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="email">
+                                 Last Name
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="email" type="email"/>
+                              </div>
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="phone">
+                                 First Name
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="phone" type="text"/>
+                              </div>
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="status">
+                                 Birthdate
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="status" type="text"/>
+                              </div>
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="role">
+                                 Gender
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="role" type="text"/>
+                              </div>
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="position">
+                                 Hire Date
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="position" type="text"/>
+                              </div>
+                              <div class="mb-4">
+                               <label class="block text-sm font-medium text-gray-700" for="company">
+                                 Religion
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="company" type="text"/>
+                              </div>
+                              <div class="mb-4">
+                                 <label class="block text-sm font-medium text-gray-700" for="maritalStatus">
+                                     Marital Status
+                                 </label>
+                                 <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="maritalStatus" type="text"/>
+                             </div> 
+                              <div class="mb-4" id="profileImageContainer">
+                               <label class="block text-sm font-medium text-gray-700" for="profileImage">
+                                Profile Image
+                               </label>
+                               <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="profileImage" type="file"/>
+                              </div>
+                                
+                               
+                              <div class="flex justify-end">
+                               <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeAddUserModal()" type="button">
+                                Cancel
+                               </button>
+                               <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="saveData()" type="button">
+                                Save Data
+                               </button>
+                              </div>
+                             </form>
                             </div>
-                        </div>
-            
-                        <!-- Bootstrap Modal for Viewing Profile Image -->
-                        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="imageModalLabel">Profile Image</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img id="profileImage" src="" alt="Profile" class="img-fluid">
-                                    </div>
-                                </div>
+                           </div>
+                           <!-- Profile Modal -->
+                           <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden" id="profileModal">
+                            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                             <h2 class="text-xl mb-4">
+                              Profile
+                             </h2>
+                             <div class="flex mb-4">
+                              <img alt="Profile Image" class=" rounded-full mr-4" style="width: 50%;height: 50%;border-radius: 10px;" height="100" id="profileImageDisplay" src="https://storage.googleapis.com/a1aa/image/KjKYeeGfOKdPDp2Njo02kQnoS6Abj3Z8B3xozXryoSgJCWNnA.jpg" width="100"/>
+                              <div>
+                               <p><strong>  Employee No: </strong> <span id="profileName"> 456 </span></p>
+                               <p><strong>Last Name:</strong><span id="profileEmail">456</span></p>
+                               <p><strong>First Name:</strong><span id="profilePhone">456</span></p>
+                               <p><strong>Birthdate:</strong><span id="profileStatus"> 456</span></p>
+                               <p> <strong>Gender: </strong> <span id="profileRole"> 456 </span> </p>
+                               <p><strong>Hire Date:</strong><span id="profilePosition">456</span></p>
+                               <p><strong>Religion:</strong><span id="profileCompany">456</span></p>
+                               <p><strong>Marital Status:</strong><span id="profilemaritalStatus">456</span></p>
+                              </div>
+                             </div>
+                             <div class="flex justify-end">
+                              <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeProfileModal()" type="button">
+                               Close
+                              </button>
+                             </div>
                             </div>
-                        </div>
+                           </div>
+                           <script>
+                            let editIndex = null;
+                         
+                                 document.addEventListener('DOMContentLoaded', (event) => {
+                                     loadData();
+                                 });
+                         
+                                 function reloadData() {
+                                     loadData();
+                                     Swal.fire(
+                                         'Reloaded!',
+                                         'Data has been reloaded.',
+                                         'success'
+                                     );
+                                 }
+                         
+                                 function addUser() {
+                                     alert('Add User button clicked');
+                                 }
+                         
+                                 function editUser(index) {
+                                     const users = JSON.parse(localStorage.getItem('users')) || [];
+                                     const user = users[index];
+                         
+                                     document.getElementById('name').value = user.name;
+                                     document.getElementById('email').value = user.email;
+                                     document.getElementById('phone').value = user.phone;
+                                     document.getElementById('status').value = user.status;
+                                     document.getElementById('role').value = user.role;
+                                     document.getElementById('position').value = user.position;
+                                     document.getElementById('company').value = user.company;
+                                     document.getElementById('maritalStatus').value = user.maritalStatus;
+                         
+                                     document.getElementById('modalTitle').innerText = 'Edit User';
+                                     document.getElementById('profileImageContainer').classList.add('hidden');
+                                     editIndex = index;
+                                     openAddUserModal();
+                                 }
+                                 function deleteUser(index) {
+                                     Swal.fire({
+                                         title: 'Are you sure?',
+                                         text: "You won't be able to revert this!",
+                                         icon: 'warning',
+                                         showCancelButton: true,
+                                         confirmButtonColor: '#3085d6',
+                                         cancelButtonColor: '#d33',
+                                         confirmButtonText: 'Yes, delete it!'
+                                     }).then((result) => {
+                                         if (result.isConfirmed) {
+                                             let users = JSON.parse(localStorage.getItem('users')) || [];
+                                             users.splice(index, 1);
+                                             localStorage.setItem('users', JSON.stringify(users));
+                                             loadData();
+                                             Swal.fire(
+                                                 'Deleted!',
+                                                 'Your data has been deleted.',
+                                                 'success'
+                                             );
+                                         }
+                                     });
+                                 }
+                                 function toggleDetails(element) {
+                                     const detailsRow = element.parentElement.nextElementSibling;
+                                     if (detailsRow.classList.contains('hidden')) {
+                                         detailsRow.classList.remove('hidden');
+                                     } else {
+                                         detailsRow.classList.add('hidden');
+                                     }
+                                 }
+                                 function openAddUserModal() {
+                                     document.getElementById('addUserModal').classList.remove('hidden');
+                                 }
+                                 function closeAddUserModal() {
+                                     document.getElementById('addUserModal').classList.add('hidden');
+                                     document.getElementById('addUserForm').reset();
+                                     document.getElementById('modalTitle').innerText = 'Add User';
+                                     document.getElementById('profileImageContainer').classList.remove('hidden');
+                                     editIndex = null;
+                                 }
+                                 function openProfileModal(name, email, phone, status, role, position, company,maritalStatus, profileImage) {  
+                                     document.getElementById('profileName').innerText = name;
+                                     document.getElementById('profileEmail').innerText = email;
+                                     document.getElementById('profilePhone').innerText = phone;
+                                     document.getElementById('profileStatus').innerText = status;
+                                     document.getElementById('profileRole').innerText = role;
+                                     document.getElementById('profilePosition').innerText = position;
+                                     document.getElementById('profileCompany').innerText = company;
+                                     document.getElementById('profilemaritalStatus').innerText = maritalStatus;
+                                     document.getElementById('profileImageDisplay').src = profileImage;
+                                     document.getElementById('profileModal').classList.remove('hidden');
+                                 }
+                                 function closeProfileModal() {
+                                     document.getElementById('profileModal').classList.add('hidden');
+                                 }
+                                 function saveData() {
+                                     const name = document.getElementById('name').value;
+                                     const email = document.getElementById('email').value;
+                                     const phone = document.getElementById('phone').value;
+                                     const status = document.getElementById('status').value;
+                                     const role = document.getElementById('role').value;
+                                     const position = document.getElementById('position').value;
+                                     const company = document.getElementById('company').value;
+                                     const maritalStatus = document.getElementById('maritalStatus').value;
+                                     const profileImage = document.getElementById('profileImage').files[0];
+                                     if (editIndex === null) {
+                                         Swal.fire({
+                                             title: 'Saving data...',
+                                             allowOutsideClick: false,
+                                             didOpen: () => {
+                                                 Swal.showLoading();
+                                             }
+                                         });
+                                     }
+                                     const reader = new FileReader();
+                                     reader.onload = function(e) {
+                                         const profileImageUrl = e.target.result;
+                         
+                                         const user = {
+                                             name,
+                                             email,
+                                             phone,
+                                             status,
+                                             role,
+                                             position,
+                                             company,
+                                             maritalStatus,
+                                             profileImageUrl
+                                         };
+                                         let users = JSON.parse(localStorage.getItem('users')) || [];
+                                         if (editIndex !== null) {
+                                             user.profileImageUrl = users[editIndex].profileImageUrl;
+                                             users[editIndex] = user;
+                                         } else {
+                                             users.push(user);
+                                         }
+                                         localStorage.setItem('users', JSON.stringify(users));
+                         
+                                         loadData();
+                                         closeAddUserModal();
+                                         if (editIndex === null) {
+                                             Swal.close();
+                                             Swal.fire(
+                                                 'Saved!',
+                                                 'Your data has been saved.',
+                                                 'success'
+                                             );
+                                         } else {
+                                             Swal.fire(
+                                                 'Saved!',
+                                                 'Your data has been updated.',
+                                                 'success'
+                                             );
+                                         }
+                                     };
+                                     if (profileImage) {
+                                         reader.readAsDataURL(profileImage);
+                                     } else {
+                                         const users = JSON.parse(localStorage.getItem('users')) || [];
+                                         if (editIndex !== null) {
+                                             const user = {
+                                                 name,
+                                                 email,
+                                                 phone,
+                                                 status,
+                                                 role,
+                                                 position,
+                                                 company,
+                                                 maritalStatus,
+                                                 profileImageUrl: users[editIndex].profileImageUrl
+                                             };
+                                             users[editIndex] = user;
+                                         } else {
+                                             const user = {
+                                                 name,
+                                                 email,
+                                                 phone,
+                                                 status,
+                                                 role,
+                                                 position,
+                                                 company,
+                                                 maritalStatus,
+                                                 profileImageUrl: 'https://placehold.co/100x100'
+                                             };
+                                             users.push(user);
+                                         }
+                                         localStorage.setItem('users', JSON.stringify(users));
+                         
+                                         loadData();
+                                         closeAddUserModal();
+                                         if (editIndex === null) {
+                                             Swal.close();
+                                             Swal.fire(
+                                                 'Saved!',
+                                                 'Your data has been saved.',
+                                                 'success'
+                                             );
+                                         } else {
+                                             Swal.fire(
+                                                 'Saved!',
+                                                 'Your data has been updated.',
+                                                 'success'
+                                             );
+                                         }
+                                     }
+                                 }
+                         
+                                 function appendUserToTable(user, index) {
+                                     const table = document.getElementById('userTable');
+                                     const row = document.createElement('tr');
+                                     row.innerHTML = `
+                                         <td class="border border-gray-200 px-4 py-2 cursor-pointer" onclick="toggleDetails(this)">${user.name}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.email}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.phone}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.status}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.role}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.position}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.company}</td>
+                                         <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.maritalStatus}</td>
+                                             <a href="#" onclick="openProfileModal('${user.name}', '${user.email}', '${user.phone}', '${user.status}', '${user.role}', '${user.position}', '${user.company}','${user.maritalStatus}', '${user.profileImageUrl}')">View Profile</a>
+                                         </td>
+                                        
+                                     `;
+                                     table.appendChild(row);
+                         
+                                     const detailsRow = document.createElement('tr');
+                                     detailsRow.classList.add('hidden', 'md:hidden');
+                                     detailsRow.innerHTML = `
+                                         <td colspan="9" class="border border-gray-200 px-4 py-2">
+                                             <div class="grid grid-cols-2 gap-4">
+                                                 <div><strong>Email:</strong> ${user.email}</div>
+                                                 <div><strong>Phone:</strong> ${user.phone}</div>
+                                                 <div><strong>Status:</strong> ${user.status}</div>
+                                                 <div><strong>Role:</strong> ${user.role}</div>
+                                                 <div><strong>Position:</strong> ${user.position}</div>
+                                                 <div><strong>Company:</strong> ${user.company}</div>
+                                                 <div><strong>Marital Status:</strong> ${user.maritalStatus}</div>
+                                                 <div><strong>Profile:</strong> <a href="#" class="text-blue-500" onclick="openProfileModal('${user.name}', '${user.email}', '${user.phone}', '${user.status}', '${user.role}', '${user.position}', '${user.company}','${user.maritalStatus}', '${user.profileImageUrl}')">View Profile</a></div>
+                                             </div>
+                                         </td>
+                                     `;
+                                     table.appendChild(detailsRow);
+                                 }
+                         
+                                 function loadData() {
+                                     const users = JSON.parse(localStorage.getItem('users')) || [];
+                                     const table = document.getElementById('userTable');
+                                     table.innerHTML = '';
+                                     users.forEach((user, index) => appendUserToTable(user, index));
+                                     updateEntryCount();
+                                 }
+                         
+                                 function updateEntryCount() {
+                                     const users = JSON.parse(localStorage.getItem('users')) || [];
+                                     document.getElementById('entryCount').innerText = users.length;
+                                 }
+                         
+                                 function searchTable() {
+                                     const searchValue = document.getElementById('search').value.toLowerCase();
+                                     const rows = document.querySelectorAll('#userTable tr');
+                                     rows.forEach(row => {
+                                         const cells = row.querySelectorAll('td');
+                                         let match = false;
+                                         cells.forEach(cell => {
+                                             if (cell.textContent.toLowerCase().includes(searchValue)) {
+                                                 match = true;
+                                             }
+                                         });
+                                         if (match) {
+                                             row.style.display = '';
+                                         } else {
+                                             row.style.display = 'none';
+                                         }
+                                     });
+                                 }
+                           </script>
                     </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

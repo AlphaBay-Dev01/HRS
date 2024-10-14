@@ -1,0 +1,351 @@
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="p-4">
+    <div class="flex space-x-2 mb-4">
+        <button id="reloadData" class="bg-blue-500 text-white px-4 py-2 rounded">Reload Data</button>
+        <button id="addEmployee" class="bg-green-500 text-white px-4 py-2 rounded">Add Employee</button>
+    </div>
+    <div class="mb-4">
+        <label for="entries" class="mr-2">Show</label>
+        <select id="entries" class="border rounded p-1">
+            <option value="10">10</option>
+        </select>
+        <label for="entries" class="ml-2">entries</label>
+    </div>
+    <div class="mb-4">
+        <label for="search" class="mr-2">Search:</label>
+        <input type="text" id="search" class="border rounded p-1">
+    </div>
+    <table id="employeeTable" class="min-w-full bg-white border">
+        <thead>
+            <tr>
+                <th class="py-2 px-4 border">Employee No.</th>
+                <th class="py-2 px-4 border">Last Name</th>
+                <th class="py-2 px-4 border">First Name</th>
+                <th class="py-2 px-4 border">Birthdate</th>
+                <th class="py-2 px-4 border">Gender</th>
+                <th class="py-2 px-4 border">Hire Date</th>
+                <th class="py-2 px-4 border">Profile</th>
+                <th class="py-2 px-4 border">ID Card</th>
+                <th class="py-2 px-4 border">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be populated here -->
+        </tbody>
+    </table>
+    <div class="mt-4">
+        <p id="entriesInfo">Showing 0 to 0 of 0 entries</p>
+        <div class="flex space-x-2">
+            <a href="#" class="text-blue-500">Previous</a>
+            <span>1</span>
+            <a href="#" class="text-blue-500">Next</a>
+        </div>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div id="employeeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg w-full h-full overflow-y-auto">
+            <h2 class="text-xl mb-4">Add New Employee</h2>
+            <form id="employeeForm">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="employeeNo" class="block">Employee No.</label>
+                        <input type="text" id="employeeNo" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="lastName" class="block">Last Name</label>
+                        <input type="text" id="lastName" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="firstName" class="block">First Name</label>
+                        <input type="text" id="firstName" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="birthdate" class="block">Birthdate</label>
+                        <input type="date" id="birthdate" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="gender" class="block">Gender</label>
+                        <input type="text" id="gender" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="hireDate" class="block">Hire Date</label>
+                        <input type="date" id="hireDate" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="religion" class="block">Religion</label>
+                        <input type="text" id="religion" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="maritalStatus" class="block">Marital Status</label>
+                        <input type="text" id="maritalStatus" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="dependents" class="block">Dependents</label>
+                        <input type="text" id="dependents" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="birthPlace" class="block">Birth Place</label>
+                        <input type="text" id="birthPlace" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="firstLanguage" class="block">First Language</label>
+                        <input type="text" id="firstLanguage" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="secondLanguage" class="block">Second Language</label>
+                        <input type="text" id="secondLanguage" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="degree" class="block">Degree</label>
+                        <input type="text" id="degree" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="passportNumber" class="block">Passport Number</label>
+                        <input type="text" id="passportNumber" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="idNumber" class="block">ID Number</label>
+                        <input type="text" id="idNumber" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="workPermitNumber" class="block">Work Permit Number</label>
+                        <input type="text" id="workPermitNumber" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="medicalInsuranceNumber" class="block">Medical Insurance Number</label>
+                        <input type="text" id="medicalInsuranceNumber" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="referenceNumber" class="block">Reference Number</label>
+                        <input type="text" id="referenceNumber" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="foreigner" class="block">Foreigner</label>
+                        <input type="text" id="foreigner" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="disability" class="block">Disability</label>
+                        <input type="text" id="disability" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="entity" class="block">Entity</label>
+                        <input type="text" id="entity" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="supervisor" class="block">Supervisor</label>
+                        <input type="text" id="supervisor" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="employeeType" class="block">Employee Type</label>
+                        <input type="text" id="employeeType" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="profile" class="block">Profile</label>
+                        <input type="file" id="profile" class="border rounded p-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="idCard" class="block">ID Card</label>
+                        <input type="file" id="idCard" class="border rounded p-2 w-full">
+                    </div>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button type="button" id="saveEmployee" class="bg-green-500 text-white px-4 py-2 rounded">Save Employee</button>
+                    <button type="button" id="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Employee Modal -->
+    <div id="viewEmployeeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg w-full h-full overflow-y-auto">
+            <h2 class="text-xl mb-4">Employee Details</h2>
+            <div id="employeeDetails" class="grid grid-cols-2 gap-4">
+                <!-- Employee details will be populated here -->
+            </div>
+            <div class="flex justify-end mt-4">
+                <button type="button" id="closeViewModal" class="bg-gray-500 text-white px-4 py-2 rounded ml-2">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addEmployee').addEventListener('click', function() {
+            document.getElementById('employeeModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('employeeModal').classList.add('hidden');
+        });
+
+        document.getElementById('saveEmployee').addEventListener('click', function() {
+            const employeeNo = document.getElementById('employeeNo').value;
+            const lastName = document.getElementById('lastName').value;
+            const firstName = document.getElementById('firstName').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const gender = document.getElementById('gender').value;
+            const hireDate = document.getElementById('hireDate').value;
+            const religion = document.getElementById('religion').value;
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const dependents = document.getElementById('dependents').value;
+            const birthPlace = document.getElementById('birthPlace').value;
+            const firstLanguage = document.getElementById('firstLanguage').value;
+            const secondLanguage = document.getElementById('secondLanguage').value;
+            const degree = document.getElementById('degree').value;
+            const passportNumber = document.getElementById('passportNumber').value;
+            const idNumber = document.getElementById('idNumber').value;
+            const workPermitNumber = document.getElementById('workPermitNumber').value;
+            const medicalInsuranceNumber = document.getElementById('medicalInsuranceNumber').value;
+            const referenceNumber = document.getElementById('referenceNumber').value;
+            const foreigner = document.getElementById('foreigner').value;
+            const disability = document.getElementById('disability').value;
+            const entity = document.getElementById('entity').value;
+            const supervisor = document.getElementById('supervisor').value;
+            const employeeType = document.getElementById('employeeType').value;
+            const profile = document.getElementById('profile').files[0]?.name || 'N/A';
+            const idCard = document.getElementById('idCard').files[0]?.name || 'N/A';
+
+            const employeeData = {
+                employeeNo,
+                lastName,
+                firstName,
+                birthdate,
+                gender,
+                hireDate,
+                religion,
+                maritalStatus,
+                dependents,
+                birthPlace,
+                firstLanguage,
+                secondLanguage,
+                degree,
+                passportNumber,
+                idNumber,
+                workPermitNumber,
+                medicalInsuranceNumber,
+                referenceNumber,
+                foreigner,
+                disability,
+                entity,
+                supervisor,
+                employeeType,
+                profile,
+                idCard
+            };
+
+            let employees = JSON.parse(localStorage.getItem('employees')) || [];
+            employees.push(employeeData);
+            localStorage.setItem('employees', JSON.stringify(employees));
+
+            addEmployeeToTable(employeeData);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Employee Added',
+                text: 'The new employee has been added successfully!',
+            }).then(() => {
+                document.getElementById('employeeModal').classList.add('hidden');
+            });
+        });
+
+        document.getElementById('reloadData').addEventListener('click', function() {
+            location.reload();
+        });
+
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('view-details')) {
+                const row = event.target.closest('tr');
+                const details = `
+                    <p><strong>Employee No.:</strong> ${row.cells[0].innerText}</p>
+                    <p><strong>Last Name:</strong> ${row.cells[1].innerText}</p>
+                    <p><strong>First Name:</strong> ${row.cells[2].innerText}</p>
+                    <p><strong>Birthdate:</strong> ${row.cells[3].innerText}</p>
+                    <p><strong>Gender:</strong> ${row.cells[4].innerText}</p>
+                    <p><strong>Hire Date:</strong> ${row.cells[5].innerText}</p>
+                    <p><strong>Profile:</strong> <img src="https://placehold.co/100x100?text=${row.cells[6]?.innerText || 'N/A'}" alt="Profile Image" class="w-24 h-24 object-cover"></p>
+                    <p><strong>ID Card:</strong> <img src="https://placehold.co/100x100?text=${row.cells[7]?.innerText || 'N/A'}" alt="ID Card Image" class="w-24 h-24 object-cover"></p>
+                `;
+
+                document.getElementById('employeeDetails').innerHTML = details;
+                document.getElementById('viewEmployeeModal').classList.remove('hidden');
+            }
+
+            if (event.target.classList.contains('delete-employee')) {
+                const row = event.target.closest('tr');
+                const employeeNo = row.cells[0].innerText;
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let employees = JSON.parse(localStorage.getItem('employees')) || [];
+                        employees = employees.filter(employee => employee.employeeNo !== employeeNo);
+                        localStorage.setItem('employees', JSON.stringify(employees));
+
+                        row.remove();
+                        updateEntriesInfo();
+
+                        Swal.fire(
+                            'Deleted!',
+                            'The employee has been deleted.',
+                            'success'
+                        );
+                    }
+                });
+            }
+        });
+
+        document.getElementById('closeViewModal').addEventListener('click', function() {
+            document.getElementById('viewEmployeeModal').classList.add('hidden');
+        });
+
+        function addEmployeeToTable(employee) {
+            const table = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            newRow.innerHTML = `
+                <td class="py-2 px-4 border">${employee.employeeNo}</td>
+                <td class="py-2 px-4 border">${employee.lastName}</td>
+                <td class="py-2 px-4 border">${employee.firstName}</td>
+                <td class="py-2 px-4 border">${employee.birthdate}</td>
+                <td class="py-2 px-4 border">${employee.gender}</td>
+                <td class="py-2 px-4 border">${employee.hireDate}</td>
+                <td class="py-2 px-4 border"><a href="#" class="text-blue-500">View Profile</a></td>
+                <td class="py-2 px-4 border"><a href="#" class="text-blue-500">View ID Card</a></td>
+                <td class="py-2 px-4 border">
+                    <button class="bg-red-500 text-white px-2 py-1 rounded delete-employee">Delete</button>
+                    <button class="bg-teal-500 text-white px-2 py-1 rounded view-details">View</button>
+                </td>
+            `;
+
+            updateEntriesInfo();
+        }
+
+        function loadEmployees() {
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            employees.forEach(employee => addEmployeeToTable(employee));
+        }
+
+        function updateEntriesInfo() {
+            const table = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
+            const rowCount = table.rows.length;
+            document.getElementById('entriesInfo').innerText = `Showing 1 to ${rowCount} of ${rowCount} entries`;
+        }
+
+        // Load employees from local storage on page load
+        window.onload = loadEmployees;
+    </script>
+</body>
+</html>

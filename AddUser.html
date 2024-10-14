@@ -1,0 +1,479 @@
+<html>
+ <head>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+  </script>
+ </head>
+ <body class="p-4">
+  <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+   <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="reloadData()">
+    Reload Data
+   </button>
+   <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="openAddUserModal()">
+    Add User
+   </button>
+  </div>
+  <div class="mb-4 flex flex-col md:flex-row justify-between space-y-2 md:space-y-0 md:space-x-2">
+   <div class="flex items-center">
+    <label class="mr-2" for="entries">
+     Show
+    </label>
+    <select class="border rounded p-1" id="entries">
+     <option value="10">
+      10
+     </option>
+    </select>
+    <label class="ml-2" for="entries">
+     entries
+    </label>
+   </div>
+   <div class="flex items-center">
+    <label class="mr-2" for="search">
+     Search:
+    </label>
+    <input class="border rounded p-1" id="search" onkeyup="searchTable()" type="text"/>
+   </div>
+  </div>
+  <div class="overflow-x-auto">
+   <table class="min-w-full border-collapse border border-gray-200">
+    <thead>
+     <tr>
+      <th class="border border-gray-200 px-4 py-2">
+        Employee No
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        Last Name
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        First Name
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        Birthdate
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        Gender
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        Hire Date
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        Religion
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+        Marital Status
+      </th>
+      <th class="border border-gray-200 px-4 py-2 hidden md:table-cell">
+       Profile
+      </th>
+      <th class="border border-gray-200 px-4 py-2">
+       Actions
+      </th>
+     </tr>
+    </thead>
+    <tbody id="userTable">
+     <!-- User rows will be appended here -->
+    </tbody>
+   </table>
+  </div>
+  <div class="mt-4">
+   <p>
+    Showing
+    <span id="entryCount">
+     0
+    </span>
+    entries
+   </p>
+   <div class="flex space-x-2">
+    <a class="text-blue-500" href="#">
+     Previous
+    </a>
+    <span>
+     1
+    </span>
+    <a class="text-blue-500" href="#">
+     Next
+    </a>
+   </div>
+  </div>
+  <!-- Add/Edit User Modal -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden" id="addUserModal">
+   <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <h2 class="text-xl mb-4" id="modalTitle">
+     Add User
+    </h2>
+    <form id="addUserForm">
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="name">
+        Employee No
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="name" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="email">
+        Last Name
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="email" type="email"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="phone">
+        First Name
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="phone" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="status">
+        Birthdate
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="status" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="role">
+        Gender
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="role" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="position">
+        Hire Date
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="position" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700" for="company">
+        Religion
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="company" type="text"/>
+     </div>
+     <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="maritalStatus">
+            Marital Status
+        </label>
+        <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="maritalStatus" type="text"/>
+    </div> 
+     <div class="mb-4" id="profileImageContainer">
+      <label class="block text-sm font-medium text-gray-700" for="profileImage">
+       Profile Image
+      </label>
+      <input class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" id="profileImage" type="file"/>
+     </div>
+       
+      
+     <div class="flex justify-end">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeAddUserModal()" type="button">
+       Cancel
+      </button>
+      <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="saveData()" type="button">
+       Save Data
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <!-- Profile Modal -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden" id="profileModal">
+   <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <h2 class="text-xl mb-4">
+     Profile
+    </h2>
+    <div class="flex mb-4">
+     <img alt="Profile Image" class=" rounded-full mr-4" style="width: 50%;height: 50%;border-radius: 10px;" height="100" id="profileImageDisplay" src="https://storage.googleapis.com/a1aa/image/KjKYeeGfOKdPDp2Njo02kQnoS6Abj3Z8B3xozXryoSgJCWNnA.jpg" width="100"/>
+     <div>
+      <p><strong>  Employee No: </strong> <span id="profileName"> 456 </span></p>
+      <p><strong>Last Name:</strong><span id="profileEmail">456</span></p>
+      <p><strong>First Name:</strong><span id="profilePhone">456</span></p>
+      <p><strong>Birthdate:</strong><span id="profileStatus"> 456</span></p>
+      <p> <strong>Gender: </strong> <span id="profileRole"> 456 </span> </p>
+      <p><strong>Hire Date:</strong><span id="profilePosition">456</span></p>
+      <p><strong>Religion:</strong><span id="profileCompany">456</span></p>
+      <p><strong>Marital Status:</strong><span id="profilemaritalStatus">456</span></p>
+     </div>
+    </div>
+    <div class="flex justify-end">
+     <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeProfileModal()" type="button">
+      Close
+     </button>
+    </div>
+   </div>
+  </div>
+  <script>
+   let editIndex = null;
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            loadData();
+        });
+
+        function reloadData() {
+            loadData();
+            Swal.fire(
+                'Reloaded!',
+                'Data has been reloaded.',
+                'success'
+            );
+        }
+
+        function addUser() {
+            alert('Add User button clicked');
+        }
+
+        function editUser(index) {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users[index];
+
+            document.getElementById('name').value = user.name;
+            document.getElementById('email').value = user.email;
+            document.getElementById('phone').value = user.phone;
+            document.getElementById('status').value = user.status;
+            document.getElementById('role').value = user.role;
+            document.getElementById('position').value = user.position;
+            document.getElementById('company').value = user.company;
+            document.getElementById('maritalStatus').value = user.maritalStatus;
+
+            document.getElementById('modalTitle').innerText = 'Edit User';
+            document.getElementById('profileImageContainer').classList.add('hidden');
+            editIndex = index;
+            openAddUserModal();
+        }
+        function deleteUser(index) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let users = JSON.parse(localStorage.getItem('users')) || [];
+                    users.splice(index, 1);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    loadData();
+                    Swal.fire(
+                        'Deleted!',
+                        'Your data has been deleted.',
+                        'success'
+                    );
+                }
+            });
+        }
+        function toggleDetails(element) {
+            const detailsRow = element.parentElement.nextElementSibling;
+            if (detailsRow.classList.contains('hidden')) {
+                detailsRow.classList.remove('hidden');
+            } else {
+                detailsRow.classList.add('hidden');
+            }
+        }
+        function openAddUserModal() {
+            document.getElementById('addUserModal').classList.remove('hidden');
+        }
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').classList.add('hidden');
+            document.getElementById('addUserForm').reset();
+            document.getElementById('modalTitle').innerText = 'Add User';
+            document.getElementById('profileImageContainer').classList.remove('hidden');
+            editIndex = null;
+        }
+        function openProfileModal(name, email, phone, status, role, position, company,maritalStatus, profileImage) {  
+            document.getElementById('profileName').innerText = name;
+            document.getElementById('profileEmail').innerText = email;
+            document.getElementById('profilePhone').innerText = phone;
+            document.getElementById('profileStatus').innerText = status;
+            document.getElementById('profileRole').innerText = role;
+            document.getElementById('profilePosition').innerText = position;
+            document.getElementById('profileCompany').innerText = company;
+            document.getElementById('profilemaritalStatus').innerText = maritalStatus;
+            document.getElementById('profileImageDisplay').src = profileImage;
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+        function saveData() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const status = document.getElementById('status').value;
+            const role = document.getElementById('role').value;
+            const position = document.getElementById('position').value;
+            const company = document.getElementById('company').value;
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const profileImage = document.getElementById('profileImage').files[0];
+            if (editIndex === null) {
+                Swal.fire({
+                    title: 'Saving data...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const profileImageUrl = e.target.result;
+
+                const user = {
+                    name,
+                    email,
+                    phone,
+                    status,
+                    role,
+                    position,
+                    company,
+                    maritalStatus,
+                    profileImageUrl
+                };
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                if (editIndex !== null) {
+                    user.profileImageUrl = users[editIndex].profileImageUrl;
+                    users[editIndex] = user;
+                } else {
+                    users.push(user);
+                }
+                localStorage.setItem('users', JSON.stringify(users));
+
+                loadData();
+                closeAddUserModal();
+                if (editIndex === null) {
+                    Swal.close();
+                    Swal.fire(
+                        'Saved!',
+                        'Your data has been saved.',
+                        'success'
+                    );
+                } else {
+                    Swal.fire(
+                        'Saved!',
+                        'Your data has been updated.',
+                        'success'
+                    );
+                }
+            };
+            if (profileImage) {
+                reader.readAsDataURL(profileImage);
+            } else {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                if (editIndex !== null) {
+                    const user = {
+                        name,
+                        email,
+                        phone,
+                        status,
+                        role,
+                        position,
+                        company,
+                        maritalStatus,
+                        profileImageUrl: users[editIndex].profileImageUrl
+                    };
+                    users[editIndex] = user;
+                } else {
+                    const user = {
+                        name,
+                        email,
+                        phone,
+                        status,
+                        role,
+                        position,
+                        company,
+                        maritalStatus,
+                        profileImageUrl: 'https://placehold.co/100x100'
+                    };
+                    users.push(user);
+                }
+                localStorage.setItem('users', JSON.stringify(users));
+
+                loadData();
+                closeAddUserModal();
+                if (editIndex === null) {
+                    Swal.close();
+                    Swal.fire(
+                        'Saved!',
+                        'Your data has been saved.',
+                        'success'
+                    );
+                } else {
+                    Swal.fire(
+                        'Saved!',
+                        'Your data has been updated.',
+                        'success'
+                    );
+                }
+            }
+        }
+
+        function appendUserToTable(user, index) {
+            const table = document.getElementById('userTable');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="border border-gray-200 px-4 py-2 cursor-pointer" onclick="toggleDetails(this)">${user.name}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.email}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.phone}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.status}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.role}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.position}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.company}</td>
+                <td class="border border-gray-200 px-4 py-2 hidden md:table-cell">${user.maritalStatus}</td>
+                    <a href="#" onclick="openProfileModal('${user.name}', '${user.email}', '${user.phone}', '${user.status}', '${user.role}', '${user.position}', '${user.company}','${user.maritalStatus}', '${user.profileImageUrl}')">View Profile</a>
+                </td>
+                <td class="border border-gray-200 px-4 py-2">
+                    <button class="bg-blue-500 text-white px-2 py-1 rounded" onclick="editUser(${index})">Edit</button>
+                    <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="deleteUser(${index})">Delete</button>
+                </td>
+            `;
+            table.appendChild(row);
+
+            const detailsRow = document.createElement('tr');
+            detailsRow.classList.add('hidden', 'md:hidden');
+            detailsRow.innerHTML = `
+                <td colspan="9" class="border border-gray-200 px-4 py-2">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><strong>Email:</strong> ${user.email}</div>
+                        <div><strong>Phone:</strong> ${user.phone}</div>
+                        <div><strong>Status:</strong> ${user.status}</div>
+                        <div><strong>Role:</strong> ${user.role}</div>
+                        <div><strong>Position:</strong> ${user.position}</div>
+                        <div><strong>Company:</strong> ${user.company}</div>
+                        <div><strong>Marital Status:</strong> ${user.maritalStatus}</div>
+                        <div><strong>Profile:</strong> <a href="#" class="text-blue-500" onclick="openProfileModal('${user.name}', '${user.email}', '${user.phone}', '${user.status}', '${user.role}', '${user.position}', '${user.company}','${user.maritalStatus}', '${user.profileImageUrl}')">View Profile</a></div>
+                    </div>
+                </td>
+            `;
+            table.appendChild(detailsRow);
+        }
+
+        function loadData() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const table = document.getElementById('userTable');
+            table.innerHTML = '';
+            users.forEach((user, index) => appendUserToTable(user, index));
+            updateEntryCount();
+        }
+
+        function updateEntryCount() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            document.getElementById('entryCount').innerText = users.length;
+        }
+
+        function searchTable() {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const rows = document.querySelectorAll('#userTable tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let match = false;
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchValue)) {
+                        match = true;
+                    }
+                });
+                if (match) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+  </script>
+ </body>
+</html>
