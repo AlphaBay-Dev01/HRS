@@ -17,6 +17,7 @@
         #messageInputContainer { padding: 10px; display: flex; align-items: center; border-top: 1px solid #ccc; }
         #message { flex: 1; padding: 10px; border-radius: 20px; border: 1px solid #ccc; margin-right: 10px; }
         #sendButton { padding: 10px 20px; border-radius: 20px; background-color: #0084ff; color: white; border: none; cursor: pointer; }
+        #clearButton { padding: 10px 20px; border-radius: 20px; background-color: red; color: white; border: none; cursor: pointer; margin-left: 10px; }
         #profileContainer { display: flex; align-items: center; padding: 10px; }
         #profileImg { width: 50px; height: 50px; border-radius: 50%; margin-right: 10px; }
         #uploadBtn { padding: 5px 10px; }
@@ -33,6 +34,7 @@
         <div id="messageInputContainer">
             <input type="text" id="message" placeholder="Type a message..." autocomplete="off" />
             <button id="sendButton" onclick="sendMessage()">Send</button>
+            <button id="clearButton" onclick="clearChat()">Clear Chat</button>
         </div>
     </div>
 
@@ -71,6 +73,8 @@
 
                 messageInput.value = ''; // clear input
                 loadMessages(); // Update chat box immediately
+            } else {
+                alert("Please enter a message."); // Alert if input is empty
             }
         }
 
@@ -89,10 +93,8 @@
             .catch(error => console.error('Error:', error));
         }
 
-        function deleteMessage(index) {
-            const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-            messages.splice(index, 1);
-            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        function clearChat() {
+            localStorage.removeItem('chatMessages'); // Remove messages from local storage
             loadMessages(); // Refresh the message display
         }
 
