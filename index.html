@@ -1,69 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Login HRS Admin</title>
-        <link href="styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="bg-primary">
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">HR SYSTEM ADMIN</h3></div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                                <label for="inputEmail">Email address</label>
-                                            </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
-                                                <label for="inputPassword">Password</label>
-                                            </div>
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                                <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Forgot Password?</a>
-                                                <a class="btn btn-primary" href="home.html">Login</a>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head> 
+<body>
+    <div class="contain mt-1">
+        <div class="card mb-1">
+            <div class="card-header">
+                <i class="fa-solid fa-table"></i>
+                LeaderTeam
+            </div>
+            <div class="contain mt-1 mb-2">
+                <div class="row">
+                    <div class="col-12 col-sm-6 d-flex mt-1">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" id="addUserBtn">
+                            Add User <i class="bi bi-people"></i>
+                        </button>
+                    </div>
+                    <div class="col-12 col-sm-6 d-flex mt-1" style="justify-content: right; align-items: center;">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by name or email" aria-label="Search">
+                        <button id="searchBtn" class="btn btn-primary ms-2">Search</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Picture</th>
+                        <th>Name</th>
+                        <th class="d-none d-md-table-cell">Gender</th>
+                        <th class="d-none d-md-table-cell">Email</th>
+                        <th class="d-none d-md-table-cell">Phone</th>
+                        <th class="d-none d-md-table-cell">Position</th>
+                        <th class="d-none d-md-table-cell">Company</th>
+                        <th class="d-none d-md-table-cell">HireDate</th>
+                        <th class="d-none d-md-table-cell">Religion</th>
+                        <th class="d-none d-md-table-cell">Marital Status</th>
+                        <th class="d-none d-md-table-cell">Dependents</th>
+                        <th class="d-none d-md-table-cell">Birth Place</th>
+                        <th class="d-none d-md-table-cell">First Language</th>
+                        <th class="d-none d-md-table-cell">Sencond Language</th>
+                        <th class="d-none d-md-table-cell">Degree</th>
+                        <th class="d-none d-md-table-cell">Passport Number</th>
+                        <th class="d-none d-md-table-cell">Reference Number</th>
+                        <th class="d-none d-md-table-cell">Picture Passport</th>
+                        <th class="d-none d-md-table-cell">Picture Visa</th>
+                        <th class="d-none d-md-table-cell">Picture Permit</th>
+                        
+
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody"></tbody>
+            </table>
+
+            <!-- Modal for Adding/Editing User -->
+            <div class="modal fade" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="dataModalLabel">Add/Edit User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="dataForm">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="picture" class="form-label">Picture:</label>
+                                    <input type="file" class="form-control" id="picture" accept="image/*">
+                                </div>
+                                <!-- Other input fields for the user form -->
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender:</label>
+                                    <select class="form-control" id="gender">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone:</label>
+                                    <input type="tel" class="form-control" id="phone">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">Position:</label>
+                                    <input type="text" class="form-control" id="position">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="company" class="form-label">Company:</label>
+                                    <input type="text" class="form-control" id="company">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="hireDate" class="form-label">HireDate:</label>
+                                    <input type="date" class="form-control" id="hireDate">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="religion" class="form-label">Religion</label>
+                                    <input type="text" class="form-control" id="religion">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="maritalStatus">Marital Status</label>
+                                    <select class="form-control" id="maritalStatus">
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dependents"  class="form-label">Dependents</label>
+                                    <input type="text" class="form-control" id="dependents">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="birthDate">Birth Place</label>
+                                    <input type="text" class="form-control" id="birthDate">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="firstLanguage">First Language</label>
+                                    <select class="form-control" id="firstLanguage">
+                                        <option value="khmer">Khmer</option>
+                                        <option value="English">English</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="Malay">Malay</option>
+                                        <option value="Indonesian">Indonesian</option>
+                                        <option value="Vietname">Vietname</option>
+                                        <option value="ThaiLand">ThaiLand</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="secondLanguage">Sencond Language</label>
+                                    <input type="text" class="form-control" id="secondLanguage">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="degree">Degree</label>
+                                    <input type="text" class="form-control" id="degree">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="passportNumber">Passport Number</label>
+                                    <input type="number" class="form-control" id="passportNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="referenceNumber"  class="form-label">Reference Number</label>
+                                    <input type="number"  class="form-control" id="referenceNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="picturePassport" class="form-label">Picture Passport:</label>
+                                    <input type="file" class="form-control" id="picturePassport" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pictureVisa" class="form-label">Picture Visa:</label>
+                                    <input type="file" class="form-control" id="pictureVisa" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="picturePermit" class="form-label">Picture Permit:</label>
+                                    <input type="file" class="form-control" id="picturePermit" accept="image/*">
+                                </div>
+                               
+
+
+
+
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="submitButton">
+                                        Submit <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Viewing User Details -->
+            <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #007bff; color: white;">
+                            <h5 class="modal-title" id="viewModalLabel">Profile</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="margin-left: auto;"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                        <div class="col-12 col-md-4 mb-3 d-flex justify-content-center">
+                                            <img id="viewPicture" class="img-preview" src="" alt="User Picture" style="max-width: 200px; height: 200px; border-radius: 10px;">
+                                        </div>
+                                        <div class="col-12 col-md-4 mb-3 d-flex justify-content-center">
+                                            <img id="viewPicturePassport" class="img-preview" src="" alt="User Picture" style="max-width: 200px; height: 200px; border-radius: 10px;">
+                                        </div>
+                                    <hr class="m-1">
+                                        <div class="col-12 col-md-4 mb-3 d-flex justify-content-center">
+                                            <img id="viewPictureVisa" class="img-preview" src="" alt="User Picture" style="max-width: 200px; height: 200px; border-radius: 10px;">
+                                        </div>
+                                        <div class="col-12 col-md-4 mb-3 d-flex justify-content-center">
+                                            <img id="viewPicturePermit" class="img-preview" src="" alt="User Picture" style="max-width: 200px; height: 200px; border-radius: 10px;">
+                                        </div>
+                                <div class="col-12 col-md-8">
+                                    <div class="d-flex flex-column">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Name:</strong> <span id="viewName"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Gender:</strong> <span id="viewGender"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Email:</strong> <span id="viewEmail"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Phone:</strong> <span id="viewPhone"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Position:</strong> <span id="viewPosition"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Company:</strong> <span id="viewCompany"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                             <strong>HireDate:</strong> <span id="viewHireDate"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Religion:</strong><span id="viewReligion"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                             <strong>Marital Status:</strong><span id="viewMaritalStatus"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Dependents:</strong><span id="viewDependents"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong >Birth Place:</strong><span id="viewBirthPlace"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong >First Language:</strong><span id="viewFirstLanguage"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Second Language:</strong><span id="viewSecondLanguage"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Degree:</strong><span id="viewDegree"></span>
+                                        </div>
+                                        <hr class="m-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Passport Number:</strong><span id="viewPassportNumber"></span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>Reference Number:</strong><span id="viewreferenceNumber"></span>
+                                        </div>
+
+                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </main>
-            </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <!-- <div class="text-muted">Copyright &copy; Your Website 2024</div> -->
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="scripts.js"></script>
-    </body>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-app.js";
+        import { getDatabase, push, ref, remove, update, onValue } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            databaseURL: "https://hrs-gp-559dd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            storageBucket: "hrs-gp-559dd.appspot.com"
+        };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+        let editingKey = null;
+        let dataModalInstance = null;
+
+        document.addEventListener("DOMContentLoaded", loadData);
+
+        function loadData() {
+            document.getElementById('dataTableBody').innerHTML = '';
+            const messagesRef = ref(database, 'messages/');
+            onValue(messagesRef, (snapshot) => {
+                let index = 1;
+                snapshot.forEach(childSnapshot => {
+                    const data = childSnapshot.val();
+                    const key = childSnapshot.key;
+                    addDataToTable(
+                        index++, 
+                        data.picture,
+                         data.name,
+                          data.gender,
+                           data.email,
+                            data.phone,
+                             data.position,
+                              data.company,
+                                data.hireDate,
+                                 data.religion,
+                                  data.maritalStatus,
+                                   data.dependents,
+                                    data.birthDate,
+                                     data.firstLanguage,
+                                      data.secondLanguage,
+                                       data.degree,
+                                        data.passportNumber,
+                                         data.referenceNumber,
+                                         data.picturePassport,
+                                          data.pictureVisa,
+                                           data.picturePermit,
+                                       key);
+                });
+            });
+        }
+
+        document.getElementById('addUserBtn').addEventListener('click', function() {
+            resetForm();
+            editingKey = null;
+            dataModalInstance = new bootstrap.Modal(document.getElementById('dataModal'));
+            dataModalInstance.show();
+        });
+
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const submitButton = document.getElementById('submitButton');
+            const spinner = submitButton.querySelector('.spinner-border');
+            submitButton.disabled = true; 
+            spinner.classList.remove('d-none');
+            submitButton.innerHTML = 'Loading... ' + spinner.outerHTML;
+            const pictureFile = document.getElementById('picture').files[0];
+            const name = document.getElementById('name').value;
+            const gender = document.getElementById('gender').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const position = document.getElementById('position').value;
+            const company = document.getElementById('company').value;
+            const hireDate = document.getElementById('hireDate').value;
+            const religion = document.getElementById('religion').value;
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const dependents = document.getElementById('dependents').value;
+            const birthDate = document.getElementById('birthDate').value;
+            const firstLanguage = document.getElementById('firstLanguage').value;
+            const secondLanguage = document.getElementById('secondLanguage').value;
+            const degree = document.getElementById('degree').value;
+            const passportNumber = document.getElementById('passportNumber').value;
+            const referenceNumber = document.getElementById('referenceNumber').value;
+            const picturePassport = document.getElementById('picturePassport').files[0];
+            const pictureVisa = document.getElementById('pictureVisa').files[0];
+            const picturePermit = document.getElementById('picturePermit').files[0];
+            const uploadFile = (file, path) => {
+            const fileRef = storageRef(storage, path + file.name);
+            return uploadBytes(fileRef, file).then(snapshot => getDownloadURL(snapshot.ref));
+        };
+        const pictureUploadPromises = [];
+        if (pictureFile) {
+            pictureUploadPromises.push(uploadFile(pictureFile, 'pictures/'));
+        }
+        if (picturePassport) {
+            pictureUploadPromises.push(uploadFile(picturePassport, 'pictures/passport/'));
+        }
+        if (pictureVisa) {
+            pictureUploadPromises.push(uploadFile(pictureVisa, 'pictures/visa/'));
+        }
+        if (picturePermit) {
+            pictureUploadPromises.push(uploadFile(picturePermit, 'pictures/permit/'));
+        }
+        Promise.all(pictureUploadPromises).then(downloadURLs => {
+            const messageObj = { 
+                picture: downloadURLs[0] || '',
+                picturePassport: downloadURLs[1] || '',
+                pictureVisa: downloadURLs[2] || '',
+                picturePermit: downloadURLs[3] || '',
+                name, gender, email, phone, position, company,
+                hireDate, religion, maritalStatus, dependents, birthDate,
+                firstLanguage, secondLanguage, degree, passportNumber, referenceNumber
+            };
+            if (editingKey) {
+                update(ref(database, 'messages/' + editingKey), messageObj)
+                    .then(() => {
+                        Swal.fire('Updated!', 'Data updated successfully!', 'success');
+                        dataModalInstance.hide();
+                        loadData();
+                    })
+                    .catch((error) => {
+                        console.error('Error updating data:', error);
+                        Swal.fire('Error!', 'Error updating data. Please try again.', 'error');
+                    });
+            } else {
+                push(ref(database, 'messages/'), messageObj)
+                    .then(() => {
+                        Swal.fire('Saved!', 'Data saved successfully!', 'success');
+                        dataModalInstance.hide();
+                        loadData();
+                    })
+                    .catch((error) => {
+                        console.error('Error saving data:', error);
+                        Swal.fire('Error!', 'Error saving data. Please try again.', 'error');
+                    });
+            }
+        }).catch((error) => {
+            console.error('Error uploading file:', error);
+            Swal.fire('Error!', 'Error uploading file. Please try again.', 'error');
+        }).finally(() => {
+            resetButton(submitButton);
+        });
+    });
+        function resetButton(button) {
+            const spinner = button.querySelector('.spinner-border');
+            spinner.classList.add('d-none');
+            button.disabled = false;
+            button.innerHTML = 'Submit ' + spinner.outerHTML; 
+        }
+
+        function addDataToTable(
+            index,
+             picture,
+              name,
+               gender,
+                email,
+                 phone,
+                  position,
+                   company,
+                     hireDate,
+                      religion,
+                       maritalStatus,
+                        dependents,
+                         birthDate,
+                          firstLanguage,
+                           secondLanguage,
+                            degree,
+                             passportNumber,
+                              referenceNumber,
+                              picturePassport,
+                               pictureVisa,
+                                picturePermit,
+                           key
+                        ) {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td style="font-size: 13px">${index}</td>
+                <td style="font-size: 13px">
+                    <img src="${picture}" alt="User Picture" style="width:35px;height:35px;border-radius: 50%;" class="view-btn" data-key="${key}">
+                </td>
+                <td style="font-size: 13px">${name}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${gender}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${email}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${phone}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${position}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${company}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${hireDate}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${religion}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${maritalStatus}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${dependents}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${birthDate}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${firstLanguage}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${secondLanguage}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${degree}</td>
+                <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${passportNumber}</td>
+                 <td class="full-content d-none d-md-table-cell" style="font-size: 14px">${referenceNumber}</td>
+                
+                <td style="font-size: 13px">
+                    <img src="${picturePassport}" alt="User Picture" style="width:35px;height:35px;border-radius: 50%;" class="view-btn" data-key="${key}">
+                </td>
+                <td style="font-size: 13px">
+                    <img src="${pictureVisa}" alt="User Picture" style="width:35px;height:35px;border-radius: 50%;" class="view-btn" data-key="${key}">
+                </td>
+                <td style="font-size: 13px">
+                    <img src="${picturePermit}" alt="User Picture" style="width:35px;height:35px;border-radius: 50%;" class="view-btn" data-key="${key}">
+                </td>
+
+
+
+                <td style="font-size: 13px">
+                    <button class="btn btn-warning btn-sm edit-btn" data-key="${key}">Edit</button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-key="${key}">Delete</button>
+                </td>
+            `;
+            document.getElementById('dataTableBody').appendChild(newRow);
+            newRow.querySelector('img').addEventListener('click', function() {
+                document.getElementById('viewPicture').src = picture;
+                document.getElementById('viewName').innerText = name;
+                document.getElementById('viewGender').innerText = gender;
+                document.getElementById('viewEmail').innerText = email;
+                document.getElementById('viewPhone').innerText = phone;
+                document.getElementById('viewPosition').innerText = position;
+                document.getElementById('viewCompany').innerText = company;
+                document.getElementById('viewHireDate').innerText = hireDate;
+                document.getElementById('viewReligion').innerText = religion;
+                document.getElementById('viewMaritalStatus').innerText = maritalStatus;
+                document.getElementById('viewDependents').innerText = dependents;
+                document.getElementById('viewBirthPlace').innerText = birthDate;
+                document.getElementById('viewFirstLanguage').innerText = firstLanguage;
+                document.getElementById('viewSecondLanguage').innerText = secondLanguage;
+                document.getElementById('viewDegree').innerText = degree;
+                document.getElementById('viewPassportNumber').innerText = passportNumber;
+                document.getElementById('viewPicturePassport').src = picturePassport;
+                document.getElementById('viewPictureVisa').src = pictureVisa;
+                document.getElementById('viewPicturePermit').src = picturePermit;
+
+                const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
+                viewModal.show();
+            });
+
+            newRow.querySelector('.edit-btn').addEventListener('click', editData);
+            newRow.querySelector('.delete-btn').addEventListener('click', deleteData);
+        }
+
+        function editData(event) {
+            editingKey = event.target.getAttribute('data-key');
+            const row = event.target.closest('tr');
+            document.getElementById('picture').value = '';
+            document.getElementById('name').value = row.cells[2].innerText;
+            document.getElementById('gender').value = row.cells[3].innerText;
+            document.getElementById('email').value = row.cells[4].innerText;
+            document.getElementById('phone').value = row.cells[5].innerText;
+            document.getElementById('position').value = row.cells[6].innerText;
+            document.getElementById('company').value = row.cells[7].innerText;
+            document.getElementById('hireDate').value = row.cells[8].innerText;
+            document.getElementById('religion').value = row.cells[9].innerText;
+            document.getElementById('maritalStatus').value = row.cells[10].innerText;
+            document.getElementById('dependents').value = row.cells[11].innerText;
+            document.getElementById('birthDate').value = row.cells[12].innerText;
+            document.getElementById('firstLanguage').value = row.cells[13].innerText;
+            document.getElementById('secondLanguage').value = row.cells[14].innerText;
+            document.getElementById('degree').value = row.cells[15].innerText;
+            document.getElementById('passportNumber').value = row.cells[16].innerText;
+            document.getElementById('picturePassport').value = row.cells[17].innerText;
+            document.getElementById('pictureVisa').value = row.cells[18].innerText;
+            document.getElementById('picturePermit').value = row.cells[19].innerText;
+
+            dataModalInstance = new bootstrap.Modal(document.getElementById('dataModal'));
+            dataModalInstance.show();
+        }
+        function deleteData(event) {
+            const key = event.target.getAttribute('data-key');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    remove(ref(database, 'messages/' + key))
+                        .then(() => {
+                            Swal.fire('Deleted!', 'Your data has been deleted.', 'success');
+                            loadData();
+                        })
+                        .catch((error) => {
+                            console.error('Error deleting data:', error);
+                            Swal.fire('Error!', 'Error deleting data. Please try again.', 'error');
+                        });
+                }
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+            const rows = document.querySelectorAll('#dataTableBody tr');
+
+            rows.forEach(row => {
+                const name = row.cells[2] ? row.cells[2].innerText.toLowerCase() : '';
+                if (name.includes(searchInput)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none'; 
+                }
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchInput = this.value.trim();
+            if (searchInput === '') {
+                loadData(); 
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('dataForm').reset();
+            editingKey = null;
+        }
+    </script>
+
+</body>
 </html>
